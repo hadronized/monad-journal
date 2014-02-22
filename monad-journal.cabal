@@ -1,7 +1,11 @@
 name:                monad-journal
-version:             0.1.0.0
--- synopsis:            
--- description:         
+license:             PublicDomain
+version:             0.2.0.0
+synopsis:            On-the-fly logging typeclass and monad transformer 
+description:         This package provides a typeclass for logging situations
+                     when you want to deal with the logs on-the-fly.
+                     It also exports a monad transformer that enables such a
+                     kind of logging in any monad.
 homepage:            https://github.com/skypers/monad-journal
 author:              DimitriSabadie
 maintainer:          dimitri.sabadie@gmail.com
@@ -11,7 +15,6 @@ build-type:          Simple
 cabal-version:       >= 1.10
 
 library
-  ghc-options:             -O2
   default-extensions:      FlexibleInstances
                          , MultiParamTypeClasses
   other-extensions:        FunctionalDependencies

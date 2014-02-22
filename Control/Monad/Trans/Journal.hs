@@ -13,9 +13,9 @@ Portability :  portable
 -}
 
 module Control.Monad.Trans.Journal (
-    -- * LoggerT monad transformer
-    LoggerT
-  , runLoggerT
+    -- * JournalT monad transformer
+    JournalT
+  , runJournalT
   , module X
   ) where
 
@@ -25,12 +25,12 @@ import Control.Monad.Trans ( MonadTrans, MonadIO )
 import Control.Monad.Trans.State ( StateT, get, modify, put, runStateT )
 import Data.Monoid ( Monoid(..) )
 
-newtype LoggerT w m a = LoggerT (StateT w m a) deriving (Applicative,Functor,Monad,MonadTrans,MonadIO)
+newtype JournalT w m a = JournalT (StateT w m a) deriving (Applicative,Functor,Monad,MonadTrans,MonadIO)
 
-instance (Monoid w, Monad m) => MonadJournal w (LoggerT w m) where
-  journal = LoggerT . modify . flip mappend
-  history = LoggerT get
-  clear   = LoggerT (put mempty)
+instance (Monoid w, Monad m) => MonadJournal w (JournalT w m) where
+  journal = JournalT . modify . flip mappend
+  history = JournalT get
+  clear   = JournalT (put mempty)
 
-runLoggerT :: (Monoid w, Monad m) => LoggerT w m a -> m (a,w)
-runLoggerT (LoggerT s) = runStateT s mempty
+runJournalT :: (Monoid w, Monad m) => JournalT w m a -> m (a,w)
+runJournalT (JournalT s) = runStateT s mempty
