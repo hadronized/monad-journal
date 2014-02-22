@@ -1,6 +1,6 @@
 name:                monad-journal
 license:             PublicDomain
-version:             0.2.0.0
+version:             0.2.1.0
 synopsis:            On-the-fly logging typeclass and monad transformer 
 description:         This package provides a typeclass for logging situations
                      when you want to deal with the logs on-the-fly.
@@ -15,7 +15,8 @@ build-type:          Simple
 cabal-version:       >= 1.10
 
 library
-  default-extensions:      FlexibleInstances
+  default-extensions:      BangPatterns
+                         , FlexibleInstances
                          , MultiParamTypeClasses
   other-extensions:        FunctionalDependencies
                          , GeneralizedNewtypeDeriving

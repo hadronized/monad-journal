@@ -28,7 +28,7 @@ import Data.Monoid ( Monoid(..) )
 newtype JournalT w m a = JournalT (StateT w m a) deriving (Applicative,Functor,Monad,MonadTrans,MonadIO)
 
 instance (Monoid w, Monad m) => MonadJournal w (JournalT w m) where
-  journal = JournalT . modify . flip mappend
+  journal !w = JournalT . modify $ flip mappend w
   history = JournalT get
   clear   = JournalT (put mempty)
 
