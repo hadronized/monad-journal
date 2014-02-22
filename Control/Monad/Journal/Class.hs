@@ -21,6 +21,7 @@ module Control.Monad.Journal.Class (
 
 import Control.Monad ( Monad )
 import Control.Monad.Trans ( MonadIO, MonadTrans, lift, liftIO )
+import Control.Monad.Trans.Either ( EitherT )
 import Control.Monad.Trans.Identity ( IdentityT )
 import Control.Monad.Trans.List ( ListT )
 import Control.Monad.Trans.Maybe ( MaybeT )
@@ -77,6 +78,11 @@ instance  (Monad m, Monoid w, MonadJournal w m) => MonadJournal w (StateT s m) w
   clear      = lift clear
 
 instance  (Monad m, Monoid w, Monoid q, MonadJournal w m) => MonadJournal w (WriterT q m) where
+  journal !w = lift (journal w)
+  history    = lift history
+  clear      = lift clear
+
+instance  (Monad m, Monoid w, MonadJournal w m) => MonadJournal w (EitherT e m) where
   journal !w = lift (journal w)
   history    = lift history
   clear      = lift clear
