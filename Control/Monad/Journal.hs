@@ -1,6 +1,5 @@
 {- |
 Module      :  Control.Monad.Journal
-Description :  Journal monad class
 Copyright   :  (c) Dimitri Sabadie
 License     :  GPL-3
 

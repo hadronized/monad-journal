@@ -2,7 +2,7 @@
 
 {- |
 Module      :  Control.Monad.Journal.Class
-Description :  `MonadJournal` class
+Description :  Journal monad typeclass
 Copyright   :  (c) Dimitri Sabadie
 License     :  GPL-3
 
