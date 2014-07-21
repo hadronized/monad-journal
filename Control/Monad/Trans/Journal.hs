@@ -16,11 +16,11 @@ module Control.Monad.Trans.Journal (
     -- * JournalT monad transformer
     JournalT
   , runJournalT
-  , module X
+  , module Control.Monad.Journal.Class
   ) where
 
 import Control.Applicative ( Applicative )
-import Control.Monad.Journal.Class as X
+import Control.Monad.Journal.Class
 import Control.Monad.Trans ( MonadTrans, MonadIO )
 import Control.Monad.Trans.State ( StateT, get, modify, put, runStateT )
 import Data.Monoid ( Monoid(..) )
