@@ -29,4 +29,6 @@ library
                          , mtl          == 2.1.*
                          , transformers == 0.3.*
                          , either       == 4.1.*
+                         , monad-control == 0.3.*
+                         , transformers-base == 0.4.*
   default-language:        Haskell2010

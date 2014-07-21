@@ -1,4 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving, UndecidableInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, TypeFamilies, UndecidableInstances #-}
 
 {- |
 Module      :  Control.Monad.Trans.Journal
@@ -20,11 +20,13 @@ module Control.Monad.Trans.Journal (
   ) where
 
 import Control.Applicative ( Applicative, Alternative )
-import Control.Monad ( MonadPlus )
+import Control.Monad ( MonadPlus, liftM )
 import Control.Monad.Journal.Class as X
 import Control.Monad.Trans ( MonadTrans, MonadIO, lift )
-import Control.Monad.Trans.State ( StateT, get, modify, put, runStateT, mapStateT )
+import Control.Monad.Trans.State --( StateT, get, modify, put, runStateT, mapStateT )
+import Control.Monad.Trans.Control ( MonadTransControl(..), MonadBaseControl(..), ComposeSt, defaultLiftBaseWith, defaultRestoreM )
 
+import Control.Monad.Base ( MonadBase, liftBase, liftBaseDefault )
 import Control.Monad.Reader.Class ( MonadReader(..) )
 import Control.Monad.Writer.Class ( MonadWriter(..) )
 import Control.Monad.State.Class  ( MonadState )
@@ -53,6 +55,27 @@ instance MonadState s m => MonadState s (JournalT w m) where
     get = lift MS.get
     put = lift . MS.put
     state = lift . MS.state
+
+
+instance Monoid w => MonadTransControl (JournalT w) where
+    newtype StT (JournalT w) a = StJournal {unStJournal :: (a, w)}
+    liftWith f = JournalT $ StateT $ \w ->
+                   liftM (\x -> (x, w))
+                     (f $ \t -> liftM StJournal $ runJournalT (journal w >> t))
+    restoreT = JournalT . StateT . const . liftM unStJournal
+    {-# INLINE liftWith #-}
+    {-# INLINE restoreT #-}
+
+instance MonadBase b m => MonadBase b (JournalT w m) where
+    liftBase = liftBaseDefault
+
+instance (Monoid w, MonadBaseControl b m) => MonadBaseControl b (JournalT w m) where
+    newtype StM (JournalT w m) a =
+        StMJournal { unStMJournal :: ComposeSt (JournalT w) m a }
+    liftBaseWith = defaultLiftBaseWith StMJournal
+    restoreM     = defaultRestoreM   unStMJournal
+    {-# INLINE liftBaseWith #-}
+    {-# INLINE restoreM #-}
 
 runJournalT :: (Monoid w, Monad m) => JournalT w m a -> m (a,w)
 runJournalT (JournalT s) = runStateT s mempty
