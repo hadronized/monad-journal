@@ -10,7 +10,7 @@ Portability :  portable
 -}
 
 module Control.Monad.Journal (
-    module X
+    module Control.Monad.Journal.Class
   ) where
 
-import Control.Monad.Journal.Class as X
+import Control.Monad.Journal.Class
