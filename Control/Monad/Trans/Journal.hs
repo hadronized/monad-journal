@@ -16,22 +16,20 @@ module Control.Monad.Trans.Journal (
     -- * JournalT monad transformer
     JournalT
   , runJournalT
-  , module X
+  , module Control.Monad.Journal.Class
   ) where
 
 import Control.Applicative ( Applicative, Alternative )
 import Control.Monad ( MonadPlus, liftM )
-import Control.Monad.Journal.Class as X
+import Control.Monad.Base ( MonadBase, liftBase, liftBaseDefault )
+import Control.Monad.Journal.Class
+import Control.Monad.Reader.Class ( MonadReader(..) )
+import Control.Monad.State.Class  ( MonadState )
+import qualified Control.Monad.State.Class as MS ( MonadState(..) )
 import Control.Monad.Trans ( MonadTrans, MonadIO, lift )
 import Control.Monad.Trans.State --( StateT, get, modify, put, runStateT, mapStateT )
 import Control.Monad.Trans.Control ( MonadTransControl(..), MonadBaseControl(..), ComposeSt, defaultLiftBaseWith, defaultRestoreM )
-
-import Control.Monad.Base ( MonadBase, liftBase, liftBaseDefault )
-import Control.Monad.Reader.Class ( MonadReader(..) )
 import Control.Monad.Writer.Class ( MonadWriter(..) )
-import Control.Monad.State.Class  ( MonadState )
-import qualified Control.Monad.State.Class as MS ( MonadState(..) )
-
 import Data.Monoid ( Monoid(..) )
 
 newtype JournalT w m a = JournalT (StateT w m a)
