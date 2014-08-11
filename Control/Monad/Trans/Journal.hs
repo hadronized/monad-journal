@@ -16,6 +16,8 @@ module Control.Monad.Trans.Journal (
     -- * JournalT monad transformer
     JournalT
   , runJournalT
+  , evalJournalT
+  , execJournalT
   , module Control.Monad.Journal.Class
   ) where
 
@@ -44,7 +46,7 @@ newtype JournalT w m a = JournalT (StateT w m a)
              , MonadWriter w'
              )
 
-instance (Monoid w, Monad m) => MonadJournal w (JournalT w m) where
+instance (Monoid w,Monad m) => MonadJournal w (JournalT w m) where
   journal !w = JournalT . modify $ flip mappend w
   history = JournalT get
   clear   = JournalT (put mempty)
@@ -64,10 +66,10 @@ instance Monoid w => MonadTransControl (JournalT w) where
     {-# INLINE liftWith #-}
     {-# INLINE restoreT #-}
 
-instance MonadBase b m => MonadBase b (JournalT w m) where
+instance (MonadBase b m) => MonadBase b (JournalT w m) where
     liftBase = liftBaseDefault
 
-instance (Monoid w, MonadBaseControl b m) => MonadBaseControl b (JournalT w m) where
+instance (Monoid w,MonadBaseControl b m) => MonadBaseControl b (JournalT w m) where
     newtype StM (JournalT w m) a =
         StMJournal { unStMJournal :: ComposeSt (JournalT w) m a }
     liftBaseWith = defaultLiftBaseWith StMJournal
@@ -75,5 +77,14 @@ instance (Monoid w, MonadBaseControl b m) => MonadBaseControl b (JournalT w m) w
     {-# INLINE liftBaseWith #-}
     {-# INLINE restoreM #-}
 
-runJournalT :: (Monoid w, Monad m) => JournalT w m a -> m (a,w)
+-- |Retrieve the value and the log history.
+runJournalT :: (Monoid w,Monad m) => JournalT w m a -> m (a,w)
 runJournalT (JournalT s) = runStateT s mempty
+
+-- |Only retrieve the value.
+evalJournalT :: (Monoid w,Monad m) => JournalT w m a -> m a
+evalJournalT (JournalT s) = evalStateT s mempty
+
+-- |Only retrieve the log history.
+execJournalT :: (Monoid w,Monad m) => JournalT w m a -> m w
+execJournalT (JournalT s) = execStateT s mempty
