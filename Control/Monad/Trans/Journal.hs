@@ -1,4 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving, TypeFamilies, UndecidableInstances #-}
+{-# OPTIONS_HADDOCK prune #-}
+
 
 {- |
 Module      :  Control.Monad.Trans.Journal

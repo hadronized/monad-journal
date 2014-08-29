@@ -6,8 +6,8 @@ description:         This package provides a typeclass for logging in
                      pure code, or more generally, in any kind of
                      context. You can do whatever you want with
                      logs, especially get them, clear them or even
-                     sink them through `IO` if you’re logging in
-                     `(MonadIO m) => m`.
+                     sink them through 'IO' if you’re logging in
+                     @(MonadIO m) => m@.
 homepage:            https://github.com/phaazon/monad-journal
 author:              DimitriSabadie
 maintainer:          dimitri.sabadie@gmail.com

@@ -39,7 +39,7 @@ class (Monoid w, Monad m) => MonadJournal w m | m -> w where
   -- |Clear the logs history.
   clear :: m ()
 
--- |Sink all logs history through `MonadIO` then clean it.
+-- |Sink all logs history through 'MonadIO' then clean it.
 sink :: (MonadJournal w m, MonadIO m) => (w -> IO ()) -> m ()
 sink out = history >>= liftIO . out >> clear
 
