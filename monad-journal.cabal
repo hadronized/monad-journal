@@ -1,12 +1,12 @@
 name:                monad-journal
 license:             PublicDomain
-version:             0.2.3.1
+version:             0.2.3.2
 synopsis:            Pure logger typeclass and monad transformer
 description:         This package provides a typeclass for logging in
                      pure code, or more generally, in any kind of
                      context. You can do whatever you want with
                      logs, especially get them, clear them or even
-                     sink them through 'IO' if you’re logging in
+                     sink them through 'IO' if you're logging in
                      @(MonadIO m) => m@.
 homepage:            https://github.com/phaazon/monad-journal
 author:              DimitriSabadie
