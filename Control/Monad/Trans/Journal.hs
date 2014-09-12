@@ -1,7 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving, TypeFamilies, UndecidableInstances #-}
 {-# OPTIONS_HADDOCK prune #-}
 
-
 {- |
 Module      :  Control.Monad.Trans.Journal
 Description :  Journal monad transformer
@@ -26,25 +25,31 @@ module Control.Monad.Trans.Journal (
 import Control.Applicative ( Applicative, Alternative )
 import Control.Monad ( MonadPlus, liftM )
 import Control.Monad.Base ( MonadBase, liftBase, liftBaseDefault )
+import Control.Monad.Except ( MonadError(..) )
 import Control.Monad.Journal.Class
 import Control.Monad.Reader.Class ( MonadReader(..) )
 import Control.Monad.State.Class  ( MonadState )
-import qualified Control.Monad.State.Class as MS ( MonadState(..) )
 import Control.Monad.Trans ( MonadTrans, MonadIO, lift )
-import Control.Monad.Trans.State --( StateT, get, modify, put, runStateT, mapStateT )
-import Control.Monad.Trans.Control ( MonadTransControl(..), MonadBaseControl(..), ComposeSt, defaultLiftBaseWith, defaultRestoreM )
+import Control.Monad.Trans.State ( StateT(..), evalStateT, execStateT, get
+                                 , modify, put, runStateT )
+import Control.Monad.Trans.Control ( MonadTransControl(..)
+                                   , MonadBaseControl(..), ComposeSt
+                                   , defaultLiftBaseWith, defaultRestoreM )
 import Control.Monad.Writer.Class ( MonadWriter(..) )
 import Data.Monoid ( Monoid(..) )
+import qualified Control.Monad.State.Class as MS ( MonadState(..) )
+
 
 newtype JournalT w m a = JournalT (StateT w m a)
     deriving ( Applicative
              , Alternative
              , Functor
              , Monad
-             , MonadTrans
+             , MonadError e
              , MonadIO
              , MonadPlus
              , MonadReader r
+             , MonadTrans
              , MonadWriter w'
              )
 
@@ -57,7 +62,6 @@ instance MonadState s m => MonadState s (JournalT w m) where
     get = lift MS.get
     put = lift . MS.put
     state = lift . MS.state
-
 
 instance Monoid w => MonadTransControl (JournalT w) where
     newtype StT (JournalT w) a = StJournal {unStJournal :: (a, w)}
