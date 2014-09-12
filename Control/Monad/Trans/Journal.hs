@@ -25,7 +25,7 @@ module Control.Monad.Trans.Journal (
 import Control.Applicative ( Applicative, Alternative )
 import Control.Monad ( MonadPlus, liftM )
 import Control.Monad.Base ( MonadBase, liftBase, liftBaseDefault )
-import Control.Monad.Except ( MonadError(..) )
+import Control.Monad.Error.Class ( MonadError(..) )
 import Control.Monad.Journal.Class
 import Control.Monad.Reader.Class ( MonadReader(..) )
 import Control.Monad.State.Class  ( MonadState )
