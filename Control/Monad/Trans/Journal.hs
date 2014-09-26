@@ -10,14 +10,20 @@
 -- Stability   :  stable
 -- Portability :  portable
 --
------------------------------------------------------------------------------
+-- Monad transformer version of 'MonadJournal'. 'JournalT' provides
+-- journaling over a monad.
 --
+-- This modules defines a few useful instances. Check the list below for
+-- further information.
+-----------------------------------------------------------------------------
+
 module Control.Monad.Trans.Journal (
     -- * JournalT monad transformer
     JournalT
   , runJournalT
   , evalJournalT
   , execJournalT
+    -- * Re-exported
   , module Control.Monad.Journal.Class
   ) where
 
@@ -38,6 +44,7 @@ import Control.Monad.Writer.Class ( MonadWriter(..) )
 import Data.Monoid ( Monoid(..) )
 import qualified Control.Monad.State.Class as MS ( MonadState(..) )
 
+-- |Transformer version of 'MonadJournal'.
 newtype JournalT w m a = JournalT (StateT w m a)
     deriving ( Applicative
              , Alternative

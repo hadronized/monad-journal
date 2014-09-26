@@ -9,6 +9,16 @@
 -- Stability   :  stable
 -- Portability :  portable
 --
+-- 'MonadWriter' on steroids.
+--
+-- 'MonadJournal' is a more controlable version of 'MonadWriter' because it
+-- enables you to access the 'Monoid' being computed up. You can then access
+-- logs inside the computation itself, whereas you cannot with
+-- 'MonadWriter' – unless you use specific functions like 'listen', but that
+-- still stacks 'Monoid' in the monad.
+--
+-- Typically, you can use 'MonadJournal' when you come across the logging
+-- problem and you need logs as long as you proceed.
 -----------------------------------------------------------------------------
 
 module Control.Monad.Journal.Class (
@@ -30,6 +40,13 @@ import Control.Monad.Trans.State ( StateT )
 import Control.Monad.Trans.Writer ( WriterT )
 import Data.Monoid ( Monoid, mappend, mempty )
 
+-- |This typeclass provides the ability to accumulate 'Monoid' in a monad
+-- via the 'journal' function; to get them via the 'history' function and
+-- finally, to purge them all with the 'clear' function.
+--
+-- In most cases, you won’t need 'history' neither 'clear'. There’s a 
+-- cool function that combines both and enables you to deal with the
+-- 'Monoid': 'sink'.
 class (Monoid w, Monad m) => MonadJournal w m | m -> w where
   -- |Log something.
   journal :: w -> m ()

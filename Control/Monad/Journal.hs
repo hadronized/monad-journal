@@ -7,6 +7,7 @@
 -- Stability   :  stable
 -- Portability :  portable
 --
+-- This module re-exports anything about the 'MonadJournal' *typeclass*.
 -----------------------------------------------------------------------------
 
 module Control.Monad.Journal (
