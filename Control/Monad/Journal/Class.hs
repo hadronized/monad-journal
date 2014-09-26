@@ -1,16 +1,15 @@
 {-# LANGUAGE FunctionalDependencies, UndecidableInstances #-}
 
-{- |
-Module      :  Control.Monad.Journal.Class
-Description :  Journal monad typeclass
-Copyright   :  (c) Dimitri Sabadie
-License     :  GPL-3
-
-Maintainer  :  dimitri.sabadie@gmail.com
-Stability   :  stable
-Portability :  portable
-
--}
+-----------------------------------------------------------------------------
+-- |
+-- Copyright   :  (C) Dimitri Sabadie
+-- License     :  BSD3
+-- 
+-- Maintainer  :  dimitri.sabadie@gmail.com
+-- Stability   :  stable
+-- Portability :  portable
+--
+-----------------------------------------------------------------------------
 
 module Control.Monad.Journal.Class (
     -- * MonadJournal

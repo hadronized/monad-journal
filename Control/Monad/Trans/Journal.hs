@@ -1,18 +1,17 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving, TypeFamilies, UndecidableInstances #-}
 {-# OPTIONS_HADDOCK prune #-}
 
-{- |
-Module      :  Control.Monad.Trans.Journal
-Description :  Journal monad transformer
-Copyright   :  (c) Dimitri Sabadie
-License     :  GPL-3
-
-Maintainer  :  dimitri.sabadie@gmail.com
-Stability   :  stable
-Portability :  portable
-
--}
-
+-----------------------------------------------------------------------------
+-- |
+-- Copyright   :  (C) Dimitri Sabadie
+-- License     :  BSD3
+-- 
+-- Maintainer  :  dimitri.sabadie@gmail.com
+-- Stability   :  stable
+-- Portability :  portable
+--
+-----------------------------------------------------------------------------
+--
 module Control.Monad.Trans.Journal (
     -- * JournalT monad transformer
     JournalT
@@ -38,7 +37,6 @@ import Control.Monad.Trans.Control ( MonadTransControl(..)
 import Control.Monad.Writer.Class ( MonadWriter(..) )
 import Data.Monoid ( Monoid(..) )
 import qualified Control.Monad.State.Class as MS ( MonadState(..) )
-
 
 newtype JournalT w m a = JournalT (StateT w m a)
     deriving ( Applicative
