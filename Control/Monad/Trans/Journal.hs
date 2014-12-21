@@ -1,11 +1,12 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving, TypeFamilies, UndecidableInstances #-}
+{-# LANGUAGE CPP, GeneralizedNewtypeDeriving, TypeFamilies
+                , UndecidableInstances #-}
 {-# OPTIONS_HADDOCK prune #-}
 
 -----------------------------------------------------------------------------
 -- |
 -- Copyright   :  (C) Dimitri Sabadie
 -- License     :  BSD3
--- 
+--
 -- Maintainer  :  dimitri.sabadie@gmail.com
 -- Stability   :  stable
 -- Portability :  portable
@@ -68,6 +69,28 @@ instance MonadState s m => MonadState s (JournalT w m) where
     put = lift . MS.put
     state = lift . MS.state
 
+instance (MonadBase b m) => MonadBase b (JournalT w m) where
+    liftBase = liftBaseDefault
+
+#if MIN_VERSION_monad_control(1,0,0)
+instance Monoid w => MonadTransControl (JournalT w) where
+  type StT (JournalT w) a = (a,w)
+  liftWith f = JournalT $ StateT $ \w ->
+               liftM (\x -> (x, w))
+                 (f $ \t -> liftM StJournal $ runJournalT (journal w >> t))
+  restoreT = JournalT . StateT . const
+  {-# INLINE liftWith #-}
+  {-# INLINE restoreT #-}
+
+instance (Monoid w,MonadBaseControl b m) => MonadBaseControl b (JournalT w m) where
+  type StM (JournalT w m) a = ComposeSt (JournalT w) m a
+  liftBaseWith = defaultLiftBaseWith StMJournal
+  restoreM     = defaultRestoreM
+  {-# INLINE liftBaseWith #-}
+  {-# INLINE restoreM #-}
+
+#else
+
 instance Monoid w => MonadTransControl (JournalT w) where
     newtype StT (JournalT w) a = StJournal {unStJournal :: (a, w)}
     liftWith f = JournalT $ StateT $ \w ->
@@ -77,9 +100,6 @@ instance Monoid w => MonadTransControl (JournalT w) where
     {-# INLINE liftWith #-}
     {-# INLINE restoreT #-}
 
-instance (MonadBase b m) => MonadBase b (JournalT w m) where
-    liftBase = liftBaseDefault
-
 instance (Monoid w,MonadBaseControl b m) => MonadBaseControl b (JournalT w m) where
     newtype StM (JournalT w m) a =
         StMJournal { unStMJournal :: ComposeSt (JournalT w) m a }
@@ -87,6 +107,8 @@ instance (Monoid w,MonadBaseControl b m) => MonadBaseControl b (JournalT w m) wh
     restoreM     = defaultRestoreM   unStMJournal
     {-# INLINE liftBaseWith #-}
     {-# INLINE restoreM #-}
+
+#endif
 
 -- |Retrieve the value and the log history.
 runJournalT :: (Monoid w,Monad m) => JournalT w m a -> m (a,w)

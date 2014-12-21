@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.6.0.1
+
+- Fixed bug about monad-control and type / data families.
+
 ### 0.6
 
 - monad-control 1.0.0.1 qualified.
