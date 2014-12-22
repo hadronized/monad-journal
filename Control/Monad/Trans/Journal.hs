@@ -77,14 +77,14 @@ instance Monoid w => MonadTransControl (JournalT w) where
   type StT (JournalT w) a = (a,w)
   liftWith f = JournalT $ StateT $ \w ->
                liftM (\x -> (x, w))
-                 (f $ \t -> liftM StJournal $ runJournalT (journal w >> t))
+                 (f $ \t -> runJournalT (journal w >> t))
   restoreT = JournalT . StateT . const
   {-# INLINE liftWith #-}
   {-# INLINE restoreT #-}
 
 instance (Monoid w,MonadBaseControl b m) => MonadBaseControl b (JournalT w m) where
   type StM (JournalT w m) a = ComposeSt (JournalT w) m a
-  liftBaseWith = defaultLiftBaseWith StMJournal
+  liftBaseWith = defaultLiftBaseWith
   restoreM     = defaultRestoreM
   {-# INLINE liftBaseWith #-}
   {-# INLINE restoreM #-}

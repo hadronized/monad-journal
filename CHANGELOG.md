@@ -1,5 +1,10 @@
 # CHANGELOG
 
+### 0.6.0.2
+
+- Fixed compilation error. That was due to the change regarding
+monad-control-1.0.
+
 ### 0.6.0.1
 
 - Fixed bug about monad-control and type / data families.
