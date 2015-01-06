@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7
+
+- Added support for GHC 7.10.
+
 ### 0.6.0.2
 
 - Fixed compilation error. That was due to the change regarding

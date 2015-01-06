@@ -1,7 +1,7 @@
 name:                monad-journal
 license:             BSD3
 license-file:        LICENSE
-version:             0.6.0.2
+version:             0.7
 synopsis:            Pure logger typeclass and monad transformer
 description:         This package provides a typeclass for logging in
                      pure code, or more generally, in any kind of
