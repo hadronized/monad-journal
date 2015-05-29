@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.7.1
+
+- Added support for either 4.4.1.
+
 ### 0.7
 
 - Added support for GHC 7.10.
