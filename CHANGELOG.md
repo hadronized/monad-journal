@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 0.8.0
+
+- Added support for either-4.5. This support breaks compatibility as we don’t have `EitherT`
+  anymore. If you used it, please fall back to `ExceptT`, which has the same interface.
+
 ### 0.7.1
 
 - Added support for either 4.4.1.
