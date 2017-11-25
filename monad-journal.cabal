@@ -1,7 +1,7 @@
 name:                monad-journal
 license:             BSD3
 license-file:        LICENSE
-version:             0.8.0
+version:             0.8.1
 synopsis:            Pure logger typeclass and monad transformer
 description:         This package provides a typeclass for logging in
                      pure code, or more generally, in any kind of
@@ -43,7 +43,6 @@ library
   build-depends:           base              >= 4.5   && < 5.0
                          , mtl               >= 2.1   && < 2.3
                          , transformers      >= 0.3   && < 0.6
-                         , either            >= 4.1   && < 4.6
                          , monad-control     >= 0.3   && < 1.1
                          , transformers-base >= 0.4   && < 0.5
 

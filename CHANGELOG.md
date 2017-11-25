@@ -1,5 +1,9 @@
 # CHANGELOG
 
+### 0.8.1
+
+- Removed the `either` dependency. It was not needed anymore!
+
 ## 0.8.0
 
 - Added support for either-4.5. This support breaks compatibility as we don’t have `EitherT`
