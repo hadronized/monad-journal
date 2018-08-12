@@ -44,6 +44,9 @@ import Control.Monad.Trans.Control ( MonadTransControl(..)
 import Control.Monad.Writer.Class ( MonadWriter(..) )
 import Data.Monoid ( Monoid(..) )
 import qualified Control.Monad.State.Class as MS ( MonadState(..) )
+#if __GLASGOW_HASKELL__ > 804
+import Control.Monad.Fail
+#endif
 
 -- |Transformer version of 'MonadJournal'.
 newtype JournalT w m a = JournalT (StateT w m a)
@@ -52,6 +55,7 @@ newtype JournalT w m a = JournalT (StateT w m a)
              , Functor
              , Monad
              , MonadError e
+             , MonadFail
              , MonadIO
              , MonadPlus
              , MonadReader r
